@@ -1,5 +1,6 @@
 package com.example.bitbucketminer.Service;
 
+import com.example.bitbucketminer.commitModel.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,18 @@ public class ProjectService {
 
         ResponseEntity<Repository> response = restTemplate.exchange(uri, HttpMethod.GET,
                 request, Repository.class);
+
+        return response.getBody();
+    }
+
+    public Commit getCommit(String workspace, String repo_slug, String commit) {
+        String uri = "https://api.bitbucket.org/2.0/repositories/" + workspace + "/" + repo_slug +
+                "/commit/" + commit;
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Commit> request = new HttpEntity<>(null, headers);
+
+        ResponseEntity<Commit> response = restTemplate.exchange(uri, HttpMethod.GET,
+                request, Commit.class);
 
         return response.getBody();
     }

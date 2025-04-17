@@ -1,5 +1,6 @@
 package com.example.bitbucketminer.Service;
 
+import com.example.bitbucketminer.commitModel.Commit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,25 @@ class ProjectServiceTest {
         System.out.println("Fork policy: "+ repository.getForkPolicy());
         System.out.println("Project: "+ repository.getProject());
         System.out.println("Main branch: "+ repository.getMainbranch());
+    }
+
+    @Test
+    @DisplayName("Get Commit")
+    void getCommit() {
+        Commit commit = projectService.getCommit("gentlero","bitbucket-api", "67a0362");
+        assertNotNull(commit);
+        System.out.println("Type: " + commit.getType());
+        System.out.println("Hash: " + commit.getHash());
+        System.out.println("Date: " + commit.getDate());
+        System.out.println("Author: " + commit.getAuthor());
+        System.out.println("Message: " + commit.getMessage());
+        System.out.println("Summary: " + commit.getSummary());
+        System.out.println("Links: " + commit.getLinks());
+        System.out.println("Parents: " + commit.getParents());
+        System.out.println("Rendered: " + commit.getRendered());
+        System.out.println("Repository: " + commit.getRepository());
+        System.out.println("Participants: " + commit.getParticipants());
+
+
     }
 }
