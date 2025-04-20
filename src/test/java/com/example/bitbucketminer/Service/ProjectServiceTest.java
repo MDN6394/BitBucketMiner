@@ -1,11 +1,15 @@
 package com.example.bitbucketminer.Service;
 
+import com.example.bitbucketminer.commentModel.Comment;
 import com.example.bitbucketminer.commitModel.Commit;
+import com.example.bitbucketminer.issueModel.Value;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.example.bitbucketminer.projectModel.Repository;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -58,5 +62,24 @@ class ProjectServiceTest {
         System.out.println("Participants: " + commit.getParticipants());
 
 
+    }
+
+    @Test
+    @DisplayName("Get issueList")
+    void getIssueList() {
+        List<Value> issueList = projectService.getIssueList("gentlero","bitbucket-api");
+        assertNotNull(issueList);
+        System.out.println(issueList.size());
+        issueList.forEach(System.out::println);
+    }
+
+    @Test
+    @DisplayName("GetCommentList")
+    void getCommentList() {
+        List<Comment> commentList = projectService.getCommentList("gentlero","bitbucket-api",
+                "87");
+        assertNotNull(commentList);
+        System.out.println(commentList.size());
+        commentList.forEach(System.out::println);
     }
 }

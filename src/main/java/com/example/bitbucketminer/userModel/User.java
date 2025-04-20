@@ -1,5 +1,5 @@
 
-package com.example.bitbucketminer.commitModel;
+package com.example.bitbucketminer.userModel;
 
 
 
