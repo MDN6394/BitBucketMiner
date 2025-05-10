@@ -1,16 +1,21 @@
 package com.example.bitbucketminer.GitMinerModels;
 
 public class GitMinerUser {
+
+    private String id;
     private String username;
     private String name;
     private String avatar_url;
     private String web_url;
 
     public GitMinerUser(String id, String username, String name, String avatar_url, String web_url) {
+
+        this.id = id;
         this.username = username;
         this.name = name;
         this.avatar_url = avatar_url;
         this.web_url = web_url;
+
     }
 
     public String getUsername() {
@@ -37,8 +42,14 @@ public class GitMinerUser {
     public void setWeb_url(String web_url) {
         this.web_url = web_url;
     }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String toString() {
-        return "User[username: " + username + ", name: " + name + " avatar_url: " + avatar_url + ", web_url: " + web_url + "]";
+        return "User[username: " + username +
+                ", name: " + name +
+                " avatar_url: " + avatar_url +
+                ", web_url: " + web_url +
+                ", id: " + id + "]";
     }
 }

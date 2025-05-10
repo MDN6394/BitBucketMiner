@@ -2,6 +2,7 @@ package com.example.bitbucketminer.Service;
 
 import com.example.bitbucketminer.commentModel.Comment;
 import com.example.bitbucketminer.commitModel.Commit;
+import com.example.bitbucketminer.commitModel.commitList;
 import com.example.bitbucketminer.issueModel.Value;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,16 @@ class ProjectServiceTest {
         System.out.println("Participants: " + commit.getParticipants());
 
 
+    }
+
+    @Test
+    @DisplayName("Get CommitList")
+    void getCommitList() {
+        commitList lista = projectService.getCommits("gentlero","bitbucket-api", "5");
+        assertNotNull(lista);
+        assertNotNull(lista.getValues());
+        assertEquals(5, Integer.parseInt(lista.getPagelen()));
+        System.out.println(lista);
     }
 
     @Test

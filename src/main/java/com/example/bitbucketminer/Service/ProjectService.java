@@ -3,6 +3,7 @@ package com.example.bitbucketminer.Service;
 import com.example.bitbucketminer.commentListModel.CommentList;
 import com.example.bitbucketminer.commentModel.Comment;
 import com.example.bitbucketminer.commitModel.Commit;
+import com.example.bitbucketminer.commitModel.commitList;
 import com.example.bitbucketminer.issueModel.IssueList;
 import com.example.bitbucketminer.issueModel.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,28 @@ public class ProjectService {
         ResponseEntity<Commit> response = restTemplate.exchange(uri, HttpMethod.GET,
                 request, Commit.class);
 
+        return response.getBody();
+    }
+
+    public commitList getCommits(String workspace, String repo_slug){
+        String uri = "https://api.bitbucket.org/2.0/repositories/" + workspace + "/" + repo_slug +
+                "/commits";
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<commitList> request = new HttpEntity<>(null, headers);
+
+        ResponseEntity<commitList> response = restTemplate.exchange(uri, HttpMethod.GET,
+                request, commitList.class);
+        return response.getBody();
+    }
+
+    public commitList getCommits(String workspace, String repo_slug, String nCommits){
+        String uri = "https://api.bitbucket.org/2.0/repositories/" + workspace + "/" + repo_slug +
+                "/commits?pagelen="+nCommits;
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<commitList> request = new HttpEntity<>(null, headers);
+
+        ResponseEntity<commitList> response = restTemplate.exchange(uri, HttpMethod.GET,
+                request, commitList.class);
         return response.getBody();
     }
 
