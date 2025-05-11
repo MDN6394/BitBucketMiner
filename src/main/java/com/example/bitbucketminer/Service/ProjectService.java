@@ -74,29 +74,15 @@ public class ProjectService {
         return response.getBody();
     }
 
-    public List<Value> getIssueList(String workspace, String repo_slug) {
-        String uri = "https://api.bitbucket.org/2.0/repositories/" + workspace + "/" + repo_slug + "/issues";
+    public List<Value> getIssueList(String workspace, String repo_slug, String nIssues) {
+        String uri = "https://api.bitbucket.org/2.0/repositories/" + workspace + "/" + repo_slug + "/issues" +
+                "?pagelen="+nIssues;
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<IssueList> request = new HttpEntity<>(null, headers);
 
         ResponseEntity<IssueList> response = restTemplate.exchange(uri, HttpMethod.GET,
                 request, IssueList.class);
-        List<Value> result = Objects.requireNonNull(response.getBody()).getValues();
-        if(Objects.requireNonNull(response.getBody()).getPagelen() != null &&
-                Objects.equals(response.getBody().getPagelen(), response.getBody().getSize())) {
-            return result;
-        }
-        Integer c = 2;
-        while (!response.getBody().getValues().isEmpty()) {
-            String newUri = "https://api.bitbucket.org/2.0/repositories/"
-                    + workspace + "/" + repo_slug + "/issues?page=" + c.toString();
-            response = restTemplate.exchange(newUri, HttpMethod.GET,
-                    request, IssueList.class);
-            result.addAll(Objects.requireNonNull(response.getBody()).getValues());
-            c++;
-
-        }
-        return result;
+        return Objects.requireNonNull(response.getBody()).getValues();
     }
 
     public List<Comment> getCommentList(String workspace, String repo_slug, String id) {
@@ -107,8 +93,7 @@ public class ProjectService {
         ResponseEntity<CommentList> response = restTemplate.exchange(uri, HttpMethod.GET,
                 request, CommentList.class);
         List<Comment> result = Objects.requireNonNull(response.getBody()).getComments();
-        if(Objects.requireNonNull(response.getBody()).getPagelen() != null &&
-                Objects.equals(response.getBody().getPagelen(), response.getBody().getSize())) {
+        if(response.getBody().getSize() <= response.getBody().getPagelen()) {
             return result;
         }
         Integer c = 2;

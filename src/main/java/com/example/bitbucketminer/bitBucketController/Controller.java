@@ -4,6 +4,7 @@ package com.example.bitbucketminer.bitBucketController;
 import com.example.bitbucketminer.GitMinerModels.GitMinerProject;
 import com.example.bitbucketminer.Service.GitMinerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,11 @@ import java.util.Optional;
 @RequestMapping("/bitbucket")
 public class Controller {
 
+
     RestTemplate restTemplate;
+
+    @Autowired
+    public Controller(RestTemplateBuilder restTemplateBuilder) {this.restTemplate = restTemplateBuilder.build();}
 
     @Autowired
     GitMinerService gitMinerService;
@@ -41,9 +46,10 @@ public class Controller {
                                   @RequestParam(defaultValue = "5") int nCommits,
                                   @RequestParam(defaultValue = "5") int nIssues,
                                   @RequestParam(defaultValue = "2") int maxPages){
-        String uri = "URI OF POST IN GITMINER PROJECT";
-        GitMinerProject project = getProject(workspace, repo_slug, nCommits, nIssues, maxPages);
-        HttpEntity<GitMinerProject> request = new HttpEntity<>(project);
+        String uri = "http://localhost:8080/gitminer/projects";
+        Optional<GitMinerProject> project = Optional.ofNullable(
+                gitMinerService.getGitMiner(workspace, repo_slug, nCommits, nIssues, maxPages));
+        HttpEntity<GitMinerProject> request = new HttpEntity<>(project.get());
         ResponseEntity<GitMinerProject> response = restTemplate.exchange(uri, HttpMethod.POST,
                 request, GitMinerProject.class);
 

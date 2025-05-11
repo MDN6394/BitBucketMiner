@@ -78,7 +78,7 @@ class ProjectServiceTest {
     @Test
     @DisplayName("Get issueList")
     void getIssueList() {
-        List<Value> issueList = projectService.getIssueList("gentlero","bitbucket-api");
+        List<Value> issueList = projectService.getIssueList("gentlero","bitbucket-api", "5");
         assertNotNull(issueList);
         System.out.println(issueList.size());
         issueList.forEach(System.out::println);
